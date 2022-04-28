@@ -27,13 +27,13 @@
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
 <script>
-var currImgIndex = 0;
+  var currentImageIndex = 0;
 function filterChanged()
 {
   var fil = document.getElementById("selectedFilter").value;
   $("#fullImage").removeClass().addClass(fil);
-  loadURL(".changeFilter?id=" + allImages[currImgIndex].id + "&filter=" + fil, function(data) {
-    allImages[currImgIndex].filter = fil;
+  loadURL(".changeFilter?id=" + allImages[currentImageIndex].id + "&filter=" + fil, function(data) {
+    allImages[currentImageIndex].filter = fil;
   });
 }
 
@@ -279,7 +279,7 @@ function updateFriends()
       function imgSelected(index){
         $("#itemDetails .submenu").fadeOut();
         $(".submenu#imageEditor").fadeIn();
-        currImgIndex = index;
+        currentImageIndex = index;
         $("#images button").removeClass("selected");
         $("#images button:nth-of-type("+(index+1)+")").addClass("selected");
         var data = allImages[index];
@@ -359,11 +359,10 @@ function updateFriends()
         });
       }
       
-      function deleteImage(index){
-        var index = currImgIndex;
+      function deleteImage(){
+        var index = currentImageIndex;
         var id = allImages[index].id;
         var x = confirm("Are you sure?");
-        console.log("something")
         if(!x) return;
         var url = "./deleteImage?id=" + id;
         loadURL(url, function(data){
@@ -372,13 +371,11 @@ function updateFriends()
       }
       
       function editImage(index){
-        console.log("somethign")
-        var index = currImgIndex;
+        var index = currentImageIndex;
         var title = allImages[index].name;
         var id = allImages[index].id;
         var newName = prompt("Edit Feed Name:", title);
         var url = "./editImage?id=" + id + "&newName=" + newName;
-        
         loadURL(url, function(data){
           feedSelected(1);
         });
@@ -446,7 +443,7 @@ var doLogout = function()
                   > 
               </a>
               <a id='editButton' class="waves-effect waves-light btn blue" style='position:fixed;bottom:0;left:40%;width:100px;' href='javascript:editImage()'><i style='margin-right:0' class="material-icons left">arrow_left</i>Edit</a>
-              <a id='deleteButton' class="waves-effect waves-light btn red" style="position:fixed;bottom:0;right:0;width:100px;" href='javascript:deleteImage()'>Delete</a>
+              <a id="deleteButton" class="waves-effect waves-light btn red" style="position:fixed;bottom:0;right:0;width:100px;" href="javascript:deleteImage()">Delete</a>
 
         </div>
 
