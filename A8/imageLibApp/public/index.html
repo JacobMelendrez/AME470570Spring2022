@@ -97,6 +97,13 @@ function fmSelected(arg, index)
   }
 }
 
+function dashFriendList(){
+  var markup = "";
+    for(var i = 0; i < allFriends.length; i++){
+      markup += "<option val='"+allFriends[i] +"'>" + allFriends[i] + "</option>"
+    }
+}
+
 function friendChanged()
 {
      lastChatTime = 0;
@@ -535,10 +542,8 @@ var doLogout = function()
     <div id='itemList'> 
         <div class='submenu'>
           <h1> Dashboard </h1>
-            <select onchange='friendChanged()' id='friendSelect'>
-            </select>
-            <div id='chatDiv' style='height:50vh;padding-bottom:10px;overflow:auto;'>
-            </div>
+            <!--<select onchange='dashFriendList()'>
+            </select>-->
           </div>
 
 
