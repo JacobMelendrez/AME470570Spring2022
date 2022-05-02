@@ -404,6 +404,10 @@ function updateFriends()
 
 
         if(index == 0){ // load dashboard
+          loadURL("./getDashboardList", function(data){
+            allImages = JSON.parse(data);
+            generateImageList();
+          });
         }
         if(index == 1){ // load images
  //         $("#itemList ")").fadeIn();
@@ -531,7 +535,12 @@ var doLogout = function()
     <div id='itemList'> 
         <div class='submenu'>
           <h1> Dashboard </h1>
-        </div>
+            <select onchange='friendChanged()' id='friendSelect'>
+            </select>
+            <div id='chatDiv' style='height:50vh;padding-bottom:10px;overflow:auto;'>
+            </div>
+          </div>
+
 
         <div class='submenu'>
           <h1> Image Library</h1>
