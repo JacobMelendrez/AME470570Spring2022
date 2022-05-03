@@ -80,7 +80,8 @@ function fmSelected(arg, index)
   $("#itemDetails .submenu#" + arg).fadeIn(0);
   $("#fsubmenu button").removeClass("selected");
   $("#fsubmenu button:nth-of-type("+(index+1)+")").addClass("selected");
-  console.log(arg);
+  //console.log("fmSelect ", allFriends.length);
+  //console.log(arg);
   if(arg === "chatFriends"){
     chatActive = true;
     lastChatTime = 0;
@@ -88,8 +89,9 @@ function fmSelected(arg, index)
     for(var i = 0; i < allFriends.length; i++){
       markup += "<option val='"+allFriends[i] +"'>" + allFriends[i] + "</option>"
     }
-    console.log(markup);
+    //console.log(markup);
     document.getElementById("friendSelect").innerHTML = markup;
+    document.getElementById("friendSelect2").innerHTML = markup;
     $("#friendSelect").formSelect();
     lastChatTime = 0;
     document.getElementById("chatDiv").innerHTML = "";
@@ -97,11 +99,15 @@ function fmSelected(arg, index)
   }
 }
 
-function dashFriendList(){
+function dashFriendSelect(){
   var markup = "";
+  
     for(var i = 0; i < allFriends.length; i++){
       markup += "<option val='"+allFriends[i] +"'>" + allFriends[i] + "</option>"
     }
+    //console.log(markup);
+    document.getElementById("friendSelect2").innerHTML = markup;
+    $("#friendSelect2").formSelect();
 }
 
 function friendChanged()
@@ -411,10 +417,7 @@ function updateFriends()
 
 
         if(index == 0){ // load dashboard
-          loadURL("./getDashboardList", function(data){
-            allImages = JSON.parse(data);
-            generateImageList();
-          });
+          dashFriendSelect();
         }
         if(index == 1){ // load images
  //         $("#itemList ")").fadeIn();
@@ -542,10 +545,11 @@ var doLogout = function()
     <div id='itemList'> 
         <div class='submenu'>
           <h1> Dashboard </h1>
-            <!--<select onchange='dashFriendList()'>
-            </select>-->
+          <select onchange='dashFriendSelect()' id='friendSelect2'>
+          </select>
+          <div id='chatDiv' style='height:50vh;padding-bottom:10px;overflow:auto;'>
           </div>
-
+        </div>
 
         <div class='submenu'>
           <h1> Image Library</h1>
