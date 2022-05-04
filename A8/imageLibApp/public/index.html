@@ -405,6 +405,21 @@ function updateFriends()
         document.getElementById("selectedFilter").value = fil;
         $("select").formSelect();
       }
+      
+      var skip = 0;
+
+      function nextTenImgs(){
+        var list = allImages;
+        console.log("length", list.length)
+        if((skip+10)<=list.length){
+          skip=skip+10;
+        }
+        var url = "./getDashboardList?skip="+skip;
+          loadURL(url, function(data){
+            allImages = JSON.parse(data);
+            generateImageList();
+          });
+      }
 
       function feedSelected(index)
       {
@@ -417,13 +432,17 @@ function updateFriends()
         $("#itemDetails .submenu").fadeOut(0);
         $("#itemList .submenu:nth-of-type("+ (index + 1)+")").fadeIn(0);
 
-
         if(index == 0){ // load dashboard
           //dashFriendSelect();
-          loadURL("./getDashboardList", function(data){
+          var url = "./getDashboardList?skip="+skip;
+          loadURL(url, function(data){
             allImages = JSON.parse(data);
             generateImageList();
           });
+          //var url = "./deleteImage?id=" + id;
+          /*loadURL(url, function(data){
+          feedSelected(1);
+        });*/
         }
         if(index == 1){ // load images
  //         $("#itemList ")").fadeIn();
@@ -554,6 +573,7 @@ var doLogout = function()
           <!--<select id='friendSelect2'>
           </select>-->
           <div id='friendImages'> </div>
+          <button onclick="nextTenImgs()">next</button>
           <!--<div id='chatDiv' style='height:50vh;padding-bottom:10px;overflow:auto;'>
           </div>-->
         </div>
