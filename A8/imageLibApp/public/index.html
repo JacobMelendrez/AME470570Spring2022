@@ -408,9 +408,22 @@ function updateFriends()
       
       var skip = 0;
 
-      function nextTenImgs(){
+      function prevTenImgs(){
         var list = allImages;
         console.log("length", list.length)
+        if((skip+10)>list.length){
+          skip=skip-10;
+        }
+        var url = "./getDashboardList?skip="+skip;
+          loadURL(url, function(data){
+            allImages = JSON.parse(data);
+            generateImageList();
+          });
+      }
+
+      function nextTenImgs(){
+        var list = allImages;
+        //console.log("length", list.length)
         if((skip+10)<=list.length){
           skip=skip+10;
         }
@@ -573,6 +586,7 @@ var doLogout = function()
           <!--<select id='friendSelect2'>
           </select>-->
           <div id='friendImages'> </div>
+          <button onclick="prevTenImgs()">prev</button>
           <button onclick="nextTenImgs()">next</button>
           <!--<div id='chatDiv' style='height:50vh;padding-bottom:10px;overflow:auto;'>
           </div>-->
