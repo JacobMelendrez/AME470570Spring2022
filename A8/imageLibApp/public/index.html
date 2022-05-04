@@ -91,7 +91,7 @@ function fmSelected(arg, index)
     }
     //console.log(markup);
     document.getElementById("friendSelect").innerHTML = markup;
-    document.getElementById("friendSelect2").innerHTML = markup;
+    //document.getElementById("friendSelect2").innerHTML = markup;
     $("#friendSelect").formSelect();
     lastChatTime = 0;
     document.getElementById("chatDiv").innerHTML = "";
@@ -99,7 +99,7 @@ function fmSelected(arg, index)
   }
 }
 
-function dashFriendSelect(){
+/*function dashFriendSelect(){
   var markup = "";
   
     for(var i = 0; i < allFriends.length; i++){
@@ -108,7 +108,7 @@ function dashFriendSelect(){
     //console.log(markup);
     document.getElementById("friendSelect2").innerHTML = markup;
     $("#friendSelect2").formSelect();
-}
+}*/
 
 function friendChanged()
 {
@@ -385,7 +385,7 @@ function updateFriends()
         if(i==0){
           markup = "<h3> No images yet! Add some.</h3>"
         }
-
+        document.getElementById("friendImages").innerHTML  = markup;
         document.getElementById("images").innerHTML  = markup;
       }
 
@@ -396,6 +396,8 @@ function updateFriends()
         currImageIndex = index;
         $("#images button").removeClass("selected");
         $("#images button:nth-of-type("+(index+1)+")").addClass("selected");
+        $("#friendImages button").removeClass("selected");
+        $("#friendImages button:nth-of-type("+(index+1)+")").addClass("selected");
         var data = allImages[index];
         var fil = data.filter;
         document.getElementById("fullImage").src = "https://bucket470570.s3-us-west-2.amazonaws.com/" + data.url 
@@ -417,7 +419,11 @@ function updateFriends()
 
 
         if(index == 0){ // load dashboard
-          dashFriendSelect();
+          //dashFriendSelect();
+          loadURL("./getDashboardList", function(data){
+            allImages = JSON.parse(data);
+            generateImageList();
+          });
         }
         if(index == 1){ // load images
  //         $("#itemList ")").fadeIn();
@@ -545,10 +551,11 @@ var doLogout = function()
     <div id='itemList'> 
         <div class='submenu'>
           <h1> Dashboard </h1>
-          <select onchange='dashFriendSelect()' id='friendSelect2'>
-          </select>
-          <div id='chatDiv' style='height:50vh;padding-bottom:10px;overflow:auto;'>
-          </div>
+          <!--<select id='friendSelect2'>
+          </select>-->
+          <div id='friendImages'> </div>
+          <!--<div id='chatDiv' style='height:50vh;padding-bottom:10px;overflow:auto;'>
+          </div>-->
         </div>
 
         <div class='submenu'>
