@@ -91,7 +91,7 @@ function fmSelected(arg, index)
     }
     //console.log(markup);
     document.getElementById("friendSelect").innerHTML = markup;
-    document.getElementById("friendSelect2").innerHTML = markup;
+    //document.getElementById("friendSelect2").innerHTML = markup;
     $("#friendSelect").formSelect();
     lastChatTime = 0;
     document.getElementById("chatDiv").innerHTML = "";
@@ -99,7 +99,7 @@ function fmSelected(arg, index)
   }
 }
 
-function dashFriendSelect(){
+/*function dashFriendSelect(){
   var markup = "";
   
     for(var i = 0; i < allFriends.length; i++){
@@ -108,7 +108,7 @@ function dashFriendSelect(){
     //console.log(markup);
     document.getElementById("friendSelect2").innerHTML = markup;
     $("#friendSelect2").formSelect();
-}
+}*/
 
 function friendChanged()
 {
@@ -385,7 +385,7 @@ function updateFriends()
         if(i==0){
           markup = "<h3> No images yet! Add some.</h3>"
         }
-
+        document.getElementById("friendImages").innerHTML  = markup;
         document.getElementById("images").innerHTML  = markup;
       }
 
@@ -396,12 +396,42 @@ function updateFriends()
         currImageIndex = index;
         $("#images button").removeClass("selected");
         $("#images button:nth-of-type("+(index+1)+")").addClass("selected");
+        $("#friendImages button").removeClass("selected");
+        $("#friendImages button:nth-of-type("+(index+1)+")").addClass("selected");
         var data = allImages[index];
         var fil = data.filter;
         document.getElementById("fullImage").src = "https://bucket470570.s3-us-west-2.amazonaws.com/" + data.url 
         $("#fullImage").removeClass().addClass(fil);
         document.getElementById("selectedFilter").value = fil;
         $("select").formSelect();
+      }
+      
+      var skip = 0;
+
+      function prevTenImgs(){
+        var list = allImages;
+        console.log("length", list.length)
+        if((skip+10)>list.length){
+          skip=skip-10;
+        }
+        var url = "./getDashboardList?skip="+skip;
+          loadURL(url, function(data){
+            allImages = JSON.parse(data);
+            generateImageList();
+          });
+      }
+
+      function nextTenImgs(){
+        var list = allImages;
+        //console.log("length", list.length)
+        if((skip+10)<=list.length){
+          skip=skip+10;
+        }
+        var url = "./getDashboardList?skip="+skip;
+          loadURL(url, function(data){
+            allImages = JSON.parse(data);
+            generateImageList();
+          });
       }
 
       function feedSelected(index)
@@ -415,9 +445,17 @@ function updateFriends()
         $("#itemDetails .submenu").fadeOut(0);
         $("#itemList .submenu:nth-of-type("+ (index + 1)+")").fadeIn(0);
 
-
         if(index == 0){ // load dashboard
-          dashFriendSelect();
+          //dashFriendSelect();
+          var url = "./getDashboardList?skip="+skip;
+          loadURL(url, function(data){
+            allImages = JSON.parse(data);
+            generateImageList();
+          });
+          //var url = "./deleteImage?id=" + id;
+          /*loadURL(url, function(data){
+          feedSelected(1);
+        });*/
         }
         if(index == 1){ // load images
  //         $("#itemList ")").fadeIn();
@@ -545,10 +583,13 @@ var doLogout = function()
     <div id='itemList'> 
         <div class='submenu'>
           <h1> Dashboard </h1>
-          <select onchange='dashFriendSelect()' id='friendSelect2'>
-          </select>
-          <div id='chatDiv' style='height:50vh;padding-bottom:10px;overflow:auto;'>
-          </div>
+          <!--<select id='friendSelect2'>
+          </select>-->
+          <div id='friendImages'> </div>
+          <button onclick="prevTenImgs()">prev</button>
+          <button onclick="nextTenImgs()">next</button>
+          <!--<div id='chatDiv' style='height:50vh;padding-bottom:10px;overflow:auto;'>
+          </div>-->
         </div>
 
         <div class='submenu'>
